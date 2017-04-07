@@ -117,7 +117,22 @@ describe 'letsencrypt::certonly' do
           { manage_cron: true,
             suppress_cron_output: true }
         end
+
         it { is_expected.to contain_cron('letsencrypt renew cron foo.example.com').with_command 'letsencrypt --text --agree-tos certonly -a standalone --keep-until-expiring -d foo.example.com > /dev/null 2>&1' }
+      end
+
+      context 'with manage cron and command after renew' do
+        let(:title) { 'foo.example.com' }
+        let(:params) do
+          { manage_cron:              true,
+            cron_command_after_renew: '/usr/bin/recreate_courier_certs' }
+
+        it 'has correct cron command' do
+          is_expected.to contain_cron('letsencrypt renew cron foo.example.com').
+            with_command('/usr/bin/letsencrypt-renew-foo_example_com')
+        end
+
+        it 'has generated script'
       end
     end
   end

@@ -29,18 +29,21 @@
 # [*cron_success_command*]
 #   String representation of a command that should be run if the renewal command
 #   succeeds.
+# [*cron_command_after_renew]*
+#   String representation of a command that is run when a certificate is renewed.
 #
 define letsencrypt::certonly (
-  $domains              = [$title],
-  $plugin               = 'standalone',
-  $webroot_paths        = undef,
-  $letsencrypt_command  = $letsencrypt::command,
-  $additional_args      = undef,
-  $environment          = [],
-  $manage_cron          = false,
-  $suppress_cron_output = false,
-  $cron_before_command  = undef,
-  $cron_success_command = undef,
+  $domains                  = [$title],
+  $plugin                   = 'standalone',
+  $webroot_paths            = undef,
+  $letsencrypt_command      = $letsencrypt::command,
+  $additional_args          = undef,
+  $environment              = [],
+  $manage_cron              = false,
+  $suppress_cron_output     = false,
+  $cron_before_command      = undef,
+  $cron_success_command     = undef,
+  $cron_command_after_renew = undef,
 ) {
   validate_array($domains)
   validate_re($plugin, ['^apache$', '^standalone$', '^webroot$'])
